@@ -1,0 +1,18 @@
+# Example Cookiecutter config for a Pdjn website
+default_context:
+  project_directory: "mysite-master"
+  author_name: "Alice Bobak"
+  author_email: "alice@hpk.io"
+  project_short_name: "Alice's little website"
+  project_codename: "MySite"
+  project_module_name: "mysite"
+  project_database_name: "mysitedb"
+  local_dev_hostname: "localhost"
+  production_hostname: "alice.hpk.io"
+  low_develop_port: "8071"
+  project_github_url: "https://github.com/alice-bobak/mysite"
+  docker_build_target: "ubuntu:focal"
+  open_source_license: "MIT"
+
+abbreviations:
+  pdjn: https://github.com/hipikat/cookiecutter-pdjn.git

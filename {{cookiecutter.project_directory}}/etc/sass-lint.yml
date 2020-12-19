@@ -1,0 +1,14 @@
+files:
+  include: 'src/sass/**/*.s+(a|c)ss'
+  ignore:
+    - 'src/sass/lib/**'
+    - 'src/sass/foundation/**'
+
+rules:
+  empty-line-between-blocks: 0
+  leading-zero: 0
+  no-ids: 0
+  no-qualifying-elements: 1
+  property-sort-order:
+    - 1
+    - order: 'concentric'

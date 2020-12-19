@@ -1,0 +1,28 @@
+{
+  "project_directory": "myproject",
+  "author_name": "Alice Bobak",
+  "author_email": "alice@hpk.io",
+  "project_short_name": "My little website",
+  "project_codename": "MySite",
+  "project_module_name": "mysite",
+  "project_database_name": "mysitedb",
+  "local_dev_hostname": "localhost",
+  "production_hostname": "mysite.com",
+  "low_develop_port": "8071",
+  "docker_build_target": ["alpine:3.12.2", "ubuntu:focal", "opensuse/leap:15.2.1"],
+  "project_github_url": "https://github.com/myaccount/mysite",
+  "open_source_license": [
+    "AGPLv3",
+    "Apache",
+    "BSD 3-clause", "BSD 2-clause",
+    "GPLv2", "GPLv3",
+    "ISC",
+    "LGPLv3",
+    "MIT",
+    "Unlicensed"
+  ],
+  "_copy_without_render": [
+    "*.html",
+    "*.hbs"
+  ]
+}

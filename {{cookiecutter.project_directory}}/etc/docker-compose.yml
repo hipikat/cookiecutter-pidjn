@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  web-build:
+    build:
+      context: ./
+      dockerfile: etc/Dockerfile
+      target: {{ cookiecutter.project_module_name }}-web-build
+    image: {{ cookiecutter.project_module_name }}-web:build
+    container_name: {{ cookiecutter.project_module_name }}-build
+    volumes:
+      - ./src:/srv/src
+      - ./var:/srv/var
+    ports:
+      - "8087:80"
+
+  web-dev:
+    build:
+      context: ./
+      dockerfile: etc/Dockerfile
+      target: {{ cookiecutter.project_module_name }}-web-debug
+    image: {{ cookiecutter.project_module_name }}-web:debug
+    container_name: {{ cookiecutter.project_module_name }}-develop
+    volumes:
+      - ./src:/srv/src
+      - ./var:/srv/var
+    ports:
+      - "8088:80"
+
+    #depends_on:
+    #  - db
+  #db:
+  #  image: postgres
+  #  environment:
+  #    - POSTGRES_DB=postgres
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASSWORD=postgres
+
+  web-stage:
+    build:
+      context: ./
+      dockerfile: etc/Dockerfile
+      target: {{ cookiecutter.project_module_name }}-web-staging
+    image: {{ cookiecutter.project_module_name }}-web:stage
+    container_name: {{ cookiecutter.project_module_name }}-staging
