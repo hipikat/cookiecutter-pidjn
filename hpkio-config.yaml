@@ -1,6 +1,6 @@
 # Cookiecutter configuration used to bake Ada's webiste
 default_context:
-  project_directory: "hpkio-baked"
+  project_directory: "hpk-master"
   author_name: "Ada Wright"
   author_email: "ada@hpk.io"
   project_short_name: "Ada's little website"
@@ -10,9 +10,9 @@ default_context:
   local_dev_hostname: "hpkio.local"
   production_hostname: "hpk.io"
   low_develop_port: "8071"
-	project_github_url: "https://github.com/hipikat/hpk.io"
+  project_github_url: "https://github.com/hipikat/hpk.io"
   docker_build_target: "ubuntu:focal"
-	open_source_license: "BSD 2-clause"
+  open_source_license: "BSD 2-clause"
 
 abbreviations:
-  pdjn: /Users/hipikat/dev/pdjn-cookiecutter
+  pidjn: /Users/hipikat/dev/cookiecutter-pidjn

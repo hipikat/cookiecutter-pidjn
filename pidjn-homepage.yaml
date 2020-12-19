@@ -1,0 +1,18 @@
+# Cookiecutter configuration used to bake Pidjn's website
+default_context:
+  project_directory: "pidjn-master"
+  author_name: "Ada Wright"
+  author_email: "ada@hpk.io"
+  project_short_name: "Pidjn"
+  project_codename: "pidjn.hpk.io"
+  project_module_name: "pidj"
+  project_database_name: "pidjn"
+  local_dev_hostname: "pidjn.local"
+  production_hostname: "pidjn.hpk.io"
+  low_develop_port: "8061"
+  project_github_url: "https://github.com/hipikat/cookiecutter-pidjn"
+  docker_build_target: "ubuntu:focal"
+  open_source_license: "BSD 2-clause"
+
+abbreviations:
+  pidjn: /Users/hipikat/dev/pidjn-cookiecutter

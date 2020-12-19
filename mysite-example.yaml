@@ -1,4 +1,4 @@
-# Example Cookiecutter config for a Pdjn website
+# Example Cookiecutter config for a Pidjn website
 default_context:
   project_directory: "mysite-master"
   author_name: "Alice Bobak"
@@ -15,4 +15,4 @@ default_context:
   open_source_license: "MIT"
 
 abbreviations:
-  pdjn: https://github.com/hipikat/cookiecutter-pdjn.git
+  pidjn: https://github.com/hipikat/cookiecutter-pidjn.git

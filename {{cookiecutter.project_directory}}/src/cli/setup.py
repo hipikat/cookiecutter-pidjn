@@ -1,4 +1,4 @@
-"""pdjn - the CLI tool of Pdjn"""
+"""pdjn - the CLI tool of Pidjn"""
 
 from setuptools import setup
 

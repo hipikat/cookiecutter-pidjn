@@ -1,7 +1,7 @@
 {
-  "name": "Pdjn Cookiecutter template",
+  "name": "Pidjn Cookiecutter template",
   "version": "0.1.0",
-  "description": "A generator for Pdjn sites",
+  "description": "The generator for Pidjn sites",
   "author": {
     "name": "Ada Wright",
     "email": "ada@hpk.io",

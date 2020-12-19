@@ -2,7 +2,7 @@
 
 Author: {{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>
 
-This project is based on a Pdjn template, generated with:
+This project is based on a Pidjn template, generated with:
 
 Python 3.8.5,
 Click 7.1.2,
