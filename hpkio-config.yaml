@@ -1,5 +1,4 @@
 # Cookiecutter configuration used to bake Ada's webiste
-
 default_context:
   project_directory: "hpkio-baked"
   author_name: "Ada Wright"
