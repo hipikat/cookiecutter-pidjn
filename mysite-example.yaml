@@ -6,6 +6,7 @@ default_context:
   project_short_name: "Alice's little website"
   project_codename: "MySite"
   project_module_name: "mysite"
+  project_env_prefix: "MYSITE"
   project_database_name: "mysitedb"
   local_dev_hostname: "localhost"
   production_hostname: "alice.hpk.io"

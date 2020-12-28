@@ -6,6 +6,7 @@ default_context:
   project_short_name: "Pidjn"
   project_codename: "pidjn.hpk.io"
   project_module_name: "pidj"
+  project_env_prefix: "PIDJN"
   project_database_name: "pidjn"
   local_dev_hostname: "pidjn.local"
   production_hostname: "pidjn.hpk.io"

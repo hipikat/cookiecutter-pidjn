@@ -1,0 +1,214 @@
+
+@charset 'utf-8'
+
+@use 'foundation' as *
+
+@import 'foundation/defaults'
+@import 'foundation/settings'
+
+@import 'util/mixins'
+
+$fa-font-path: 'lib/fontawesome/webfonts'
+@import 'lib/fontawesome/scss/fontawesome'
+@import 'lib/fontawesome/scss/solid'
+//@import 'lib/fontawesome/scss/regular'
+
+// Debug flags
+//$body-background: lighten(#ffff00, 35%)
+//$small-hint: scale-color(yellow, $lightness: 80%)
+//$smallish-hint: scale-color(red, $lightness: 80%)
+//$medium-hint: scale-color(green, $lightness: 80%)
+//$large-hint: scale-color(blue, $lightness: 80%)
+
+// Debug off
+$site-title-colour: scale-color($trans-pink, $lightness: 90%)
+$small-hint: $site-title-colour
+$smallish-hint: $site-title-colour
+$medium-hint: $site-title-colour
+$large-hint: $site-title-colour
+
+
+// Colours
+// NB: some (non-foundation) colours are also defined in _settings.scss
+$sidebar-pink-start: scale-color($trans-pink, $lightness: 99%)
+$sidebar-pink-cornice: scale-color($trans-pink, $lightness: 98%)
+$sidebar-pink-end: desaturate(darken(scale-color($trans-pink,  $lightness: 70%), 13%), 50%)
+
+
+
+/* Django-CMS */
+.main.shifted > #nav-sidebar
+    padding-top: 72px
+
+#nav-sidebar .current-app .section:link,
+#nav-sidebar .current-app .section:visited
+    color: #666
+
+div.cms .cms-sideframe-history
+  .cms-icon-arrow-forward
+    padding: 8px 6px 8px 4px
+  .cms-icon
+    padding: 8px 4px 8px 10px
+
+.cms-admin-sideframe.cms-debug
+  #container
+    .breadcrumbs
+      padding-left: 309px !important
+
+
+/* Django Debug Toolbar */
+body #djDebug #djDebugToolbarHandle
+  top: 20px
+
+
+/* Main stuff; late in the cascade */
+html
+  height: 100%
+
+body
+  background: $body-background
+
+p
+  @include breakpoint(smallish down)
+    font-size: 90%
+
+.iso-8601
+  color: $medium-gray
+  .date,
+  .time
+    color: $body-font-color
+  .a-t,
+  .zone
+    padding: 0 0.1rem
+
+.kill-orphans
+  white-space: nowrap
+
+#body-lining
+  min-height: 100vh
+  text-align: left
+
+#site-title-cell
+  > div
+    display: inline-block
+    margin: 0.8rem 0 0
+    text-align: right
+    h1
+      margin: 0
+      padding: 0
+      line-height: 0
+    h1 > span
+      display: inline-block
+      border: solid $black
+      border-width: 1px 0.1rem
+      background-color: $black
+      line-height: 1
+      color: $small-hint
+      font-size: 1rem
+      @include breakpoint(smallish)
+        border-width: 1px 0.4rem
+      @include breakpoint(medium)
+        border-width: 1px 0.9rem
+      &:nth-child(1)
+        font-size: 1.1rem
+        font-weight: bold
+
+      @include breakpoint(smallish)
+        color: $smallish-hint
+        font-size: 1rem
+        &:nth-child(1)
+          font-size: 1.8rem
+
+      @include breakpoint(medium)
+        color: $medium-hint
+        font-size: 1.4rem
+        &:nth-child(1)
+          font-size: 2.4rem
+
+      @include breakpoint(large)
+        color: $large-hint
+        font-size: 2rem
+        &:nth-child(1)
+          font-size: 3.6rem
+
+#top-stuff
+  margin-top: auto
+  padding-top: 0.5rem
+  padding-bottom: 0.5rem
+  font-size: $small-font-size
+  .time-ago
+    display: none
+  @include breakpoint(medium)
+    .time-ago
+      display: inline
+  > .cell
+    padding-top: 0.2rem
+
+#page-header
+  top: 0
+
+#title-container
+  #page-section
+    .grid-x
+      height: 100%
+    .cell
+      @include xy-gutters($gutters: $grid-padding-gutters, $gutter-type: padding)
+      margin-top: auto
+      border-bottom: 1px solid darken($trans-blue, 20%)
+      padding-left: 0
+    p,
+    span.p
+      display: inline-block
+      margin-bottom: 0.2rem
+      vertical-align: bottom
+      font-family: $header-font-family
+      font-size: 1rem
+      font-weight: bold
+      line-height: 1.7
+      @include breakpoint(medium)
+        font-size: 1.2rem
+      @include breakpoint(large)
+        font-size: 1.4rem
+  #page-title
+    @include xy-gutters($gutters: $grid-padding-gutters, $gutter-type: padding)
+    border-bottom: 1px solid darken($trans-blue, 20%)
+    h1
+      margin-bottom: 0.2rem
+
+#ada-portrait
+  width: 11rem
+
+#body-lining > header > .grid-container > .grid-x > :nth-child(1),
+#body-lining > main > .grid-container > .grid-x > :nth-child(1),
+#body-lining > main > .grid-container > .grid-x > #page-section
+  background: linear-gradient(to right, $sidebar-pink-start, 75%, $sidebar-pink-cornice, 99%, $sidebar-pink-end)
+
+#body-container
+  min-height: 100vh
+  .grid-x
+    padding-bottom: 4px
+    min-height: 100vh
+
+#body-copy
+  p
+    margin-right: 33%
+
+#pride-stripe
+  position: fixed
+  bottom: 0
+  width: 100%
+  .cell
+    height: 4px
+  .grid-x
+    :nth-child(1)
+      background-color: $pride-red
+    :nth-child(2)
+      background-color: $pride-orange
+    :nth-child(3)
+      background-color: $pride-yellow
+    :nth-child(4)
+      background-color: $pride-green
+    :nth-child(5)
+      background-color: $pride-blue
+    :nth-child(6)
+      background-color: $pride-purple

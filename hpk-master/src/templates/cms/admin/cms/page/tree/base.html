@@ -1,0 +1,8 @@
+{% extends "admin/cms/page/tree/base.html" %}
+{% load i18n admin_list static admin_urls cms_admin cms_js_tags cms_static cms_tags %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <!-- is anyone listening -->
+    <link rel="stylesheet" href="/static/css/main.css">
+{% endblock extrahead %}

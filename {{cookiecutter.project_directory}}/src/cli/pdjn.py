@@ -12,7 +12,9 @@ def cli():
 
 
 @click.command()
-@click.option('--dev', default=False, help="Install developer dependencies")
+@click.option('--rebuild', default=False, help="Teardown virtualenv and node_modules first")
+@click.option('--dev/--prod', default=False, help="Install developer packages")
+@click.argument('environment', default="prod", envvar="{{ cookiecutter.project_env_prefix }}_DJANGO_ENVIRONMENT")
 def init():
     if dev:     # noqa: F821
         echo("Setting up production environment...")
@@ -28,8 +30,14 @@ def teardown():
     call('npm run teardown', shell=True)
 
 
+@click.command()
+def bake():
+    echo('Baking project from Cookiecutter template...')
+    import cookiecutter
+
+
 list(map(cli.add_command, [
-    init, teardown
+    init, teardown, bake
 ]))
 
 

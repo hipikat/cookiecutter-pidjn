@@ -87,10 +87,10 @@ RUN npm install --save-prod --save-dev
 
 # Copy project files
 COPY etc/env.* etc/*.config.* etc/*-lint.* etc/
-COPY scripts/ scripts/
+COPY bin/ bin/
 
 # Set up environment
-RUN echo "SECRET_KEY=$(python3 scripts/generate_secret_key.py)" >> etc/env.prod && \
+RUN echo "SECRET_KEY=$(python3 bin/generate_secret_key.py)" >> etc/env.prod && \
     ln -s etc/env.prod .env
 
 # Build static files
@@ -120,7 +120,7 @@ RUN pipenv install --deploy
 
 # Copy project files
 COPY etc/env.* etc/*.config.* etc/*-lint.* etc/
-COPY scripts/ scripts/
+COPY bin/ bin/
 
 # Copy source code in (do not mount; this is staging)
 COPY src/ src/

@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  web-build:
+    build:
+      context: ./
+      dockerfile: etc/Dockerfile
+      target: pidj-web-build
+    image: pidj-web:build
+    container_name: pidj-build
+    volumes:
+      - ./src:/srv/src
+      - ./var:/srv/var
+    ports:
+      - "8087:80"
+
+  web-dev:
+    build:
+      context: ./
+      dockerfile: etc/Dockerfile
+      target: pidj-web-debug
+    image: pidj-web:debug
+    container_name: pidj-develop
+    volumes:
+      - ./src:/srv/src
+      - ./var:/srv/var
+    ports:
+      - "8088:80"
+
+    #depends_on:
+    #  - db
+  #db:
+  #  image: postgres
+  #  environment:
+  #    - POSTGRES_DB=postgres
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASSWORD=postgres
+
+  web-stage:
+    build:
+      context: ./
+      dockerfile: etc/Dockerfile
+      target: pidj-web-staging
+    image: pidj-web:stage
+    container_name: pidj-staging

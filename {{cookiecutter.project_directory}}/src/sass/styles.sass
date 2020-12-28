@@ -36,13 +36,17 @@ $sidebar-pink-end: desaturate(darken(scale-color($trans-pink,  $lightness: 70%),
 
 
 
-/* Django-CMS */
-.main.shifted > #nav-sidebar
-    padding-top: 72px
+// Django-CMS
+.main
+  &.shifted
+    > #nav-sidebar
+      padding-top: 72px
 
-#nav-sidebar .current-app .section:link,
-#nav-sidebar .current-app .section:visited
-    color: #666
+#nav-sidebar
+  .current-app
+    .section:link,
+    .section:visited
+        color: #666
 
 div.cms .cms-sideframe-history
   .cms-icon-arrow-forward

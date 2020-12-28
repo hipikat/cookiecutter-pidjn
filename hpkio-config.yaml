@@ -1,11 +1,12 @@
 # Cookiecutter configuration used to bake Ada's webiste
 default_context:
-  project_directory: "hpk-master"
+  project_directory: "../hpk-master"
   author_name: "Ada Wright"
   author_email: "ada@hpk.io"
   project_short_name: "Ada's little website"
   project_codename: "hpk.io"
   project_module_name: "hpk"
+  project_env_prefix: "HPKIO"
   project_database_name: "hpkio"
   local_dev_hostname: "hpkio.local"
   production_hostname: "hpk.io"

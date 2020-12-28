@@ -56,6 +56,7 @@ RUN apt-get update && \
 # Set up the Python virtualenv
 WORKDIR /srv
 COPY Pipfile ./
+COPY src/cli/ src/cli/
 RUN pipenv install --skip-lock
 
 # Expose port 8080 for Nginx
@@ -96,10 +97,10 @@ RUN echo "unsafe-perm = true" > ~/.npmrc \
 
 # Copy project files
 COPY etc/env.* etc/*.config.* etc/*-lint.* etc/
-COPY scripts/ scripts/
+COPY bin/ bin/
 
 # Set up environment
-RUN echo "SECRET_KEY=$(python3 scripts/generate_secret_key.py)" >> etc/env.prod && \
+RUN echo "SECRET_KEY=$(python3 bin/generate_secret_key.py)" >> etc/env.prod && \
     ln -s etc/env.prod .env
 
 # Build static files
@@ -131,7 +132,7 @@ RUN pipenv install --deploy
 
 # Copy project files
 COPY etc/env.* etc/*.config.* etc/*-lint.* etc/
-COPY scripts/ scripts/
+COPY bin/ bin/
 
 # Copy static files built by the build image
 COPY --from={{ cookiecutter.project_module_name }}-web-build /srv/static ./static

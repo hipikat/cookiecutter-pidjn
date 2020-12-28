@@ -16,9 +16,6 @@
   "bugs": {
     "url": "{{ cookiecutter.project_github_url }}/issues"
   },
-  "config": {
-    "port": 8000
-  },
   "private": true,
   "dependencies": {
     "jquery": "^3.5.1",
@@ -59,12 +56,14 @@
   },
   "scripts": {
     "teardown": "rm -Rf $(pipenv --venv) && rm -Rf ./node_modules",
-    "init:py": "pipenv install --python `pyenv which python`",
+    "init:py": "pipenv install",
     "init:node": "npm install --save-prod",
-    "init:py:dev": "pipenv install --dev --python `pyenv which python`",
+    "init:py:dev": "pipenv install --dev",
     "init:node:dev": "npm install --save-prod --save-dev",
-    "init": "npm run init:py:dev ; npm run init:node:dev",
-    "rebuild": "npm run teardown ; npm run init:node:dev & PIDNPM=$! ; npm run init:py:dev & PIDPY=$! ; wait $PIDNPM ; wait $PIDPY",
+    "init": "npm run init:py:dev ; npm run init:node:dev ; npm run install:symlinks ; npm run install:secretkey",
+    "install:symlinks": "./bin/install_symlinks.py --debug --config",
+    "install:secretkey": "./bin/generate_secret_key.py",
+    "reinit": "npm run teardown ; npm run init:node:dev & PIDNPM=$! ; npm run init:py:dev & PIDPY=$! ; wait $PIDNPM ; npm run install:symlinks ; wait $PIDPY npm run install:secretkey",
     "npm:outdated": "npm outdated",
     "npm:update": "npm update --save-prod --save-dev",
     "git+lock": "git add Pipfile.lock package-lock.json",
@@ -91,7 +90,7 @@
     "watch:collectstatic": "chokidar 'var/build-webpack/**/*.*' --debounce 1200 -c 'npm run collectstatic'",
     "watch:debug": "concurrently --names '🐛>build,🥚static' --prefix-colors 'blue,green' 'npm run watch:webpack:debug' 'npm run watch:collectstatic'",
     "watch:prod": "concurrently --names '🦋>build,🥚static' --prefix-colors 'cyan,green' 'npm run watch:webpack' 'npm run watch:collectstatic'",
-    "watch": "concurrently --names '🐛>build,>🦋build,🥚static' --prefix-colors 'blue,cyan,green' 'npm run watch:webpack:debug' 'npm run watch:webpack' 'npm run watch:collectstatic'",
+    "watch:build": "concurrently --names '🐛>build,>🦋build,🥚static' --prefix-colors 'blue,cyan,green' 'npm run watch:webpack:debug' 'npm run watch:webpack' 'npm run watch:collectstatic'",
     "build:static:debug": "run-s webpack:debug collectstatic",
     "build:static:prod": "run-s webpack collectstatic",
     "build:static": "run-s webpack:all collectstatic",
