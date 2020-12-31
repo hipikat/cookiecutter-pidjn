@@ -1,0 +1,18 @@
+# Cookiecutter configuration used to bake {{ cookiecutter.project_short_name }}
+default_context:
+  project_directory: "{{ cookiecutter.project_directory }}"
+  author_name: "{{ cookiecutter.author_name }}"
+  author_email: "{{ cookiecutter.author_email }}"
+  project_short_name: "{{ cookiecutter.project_short_name }}"
+  project_codename: "{{ cookiecutter.project_codename }}"
+  project_module_name: "{{ cookiecutter.project_module_name }}"
+  project_env_prefix: "{{ cookiecutter.project_env_prefix }}"
+  project_database_name: "{{ cookiecutter.project_database_name }}"
+  local_dev_hostname: "{{ cookiecutter.local_dev_hostname }}"
+  production_hostname: "{{ cookiecutter.production_hostname }}"
+  low_develop_port: "{{ cookiecutter.low_develop_port }}"
+  project_github_url: "{{ cookiecutter.project_github_url }}"
+  docker_build_target: "{{ cookiecutter.docker_build_target }}"
+  open_source_license: "{{ cookiecutter.open_source_license }}"
+
+cookiecutters_dir: ./var

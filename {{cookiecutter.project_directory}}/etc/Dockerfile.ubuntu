@@ -26,7 +26,7 @@
 FROM ubuntu:focal AS {{ cookiecutter.project_module_name }}-web-base
 
 LABEL version="0.1.0"
-LABEL Description="Web app for {{ cookiecutter.project_codename }}"
+LABEL Description="Base image for {{ cookiecutter.project_codename }} containers"
 LABEL maintainer="{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"
 
 ENV LANG en_AU.UTF-8
@@ -54,9 +54,9 @@ RUN apt-get update && \
         pep8
 
 # Set up the Python virtualenv
-WORKDIR /srv
+WORKDIR /app/
 COPY Pipfile ./
-COPY src/cli/ src/cli/
+COPY cli/ cli/
 RUN pipenv install --skip-lock
 
 # Expose port 8080 for Nginx
@@ -70,6 +70,8 @@ CMD ["/bin/bash"]
 #######################################
 # BUILD LAYER (also the base for debug)
 FROM {{ cookiecutter.project_module_name }}-web-base AS {{ cookiecutter.project_module_name }}-web-build
+
+LABEL Description="Web app for {{ cookiecutter.project_codename }}"
 
 # Install Node, and dev system-packages, and clean up after apt
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
@@ -96,12 +98,12 @@ RUN echo "unsafe-perm = true" > ~/.npmrc \
     #sudo chown -R 65534:0 "/root/.npm" && \
 
 # Copy project files
-COPY etc/env.* etc/*.config.* etc/*-lint.* etc/
+COPY etc/env.prod etc/webpack.config.js etc/
 COPY bin/ bin/
 
 # Set up environment
-RUN echo "SECRET_KEY=$(python3 bin/generate_secret_key.py)" >> etc/env.prod && \
-    ln -s etc/env.prod .env
+RUN ln -s etc/env.prod .env && \
+    python3 bin/generate_secret_key.py
 
 # Build static files
 COPY src/ src/
@@ -135,10 +137,10 @@ COPY etc/env.* etc/*.config.* etc/*-lint.* etc/
 COPY bin/ bin/
 
 # Copy static files built by the build image
-COPY --from={{ cookiecutter.project_module_name }}-web-build /srv/static ./static
+COPY --from={{ cookiecutter.project_module_name }}-web-build /app/static ./static
 
 # Copy source code in (do not mount; this is staging)
-COPY src/ src/
+#COPY src/ src/
 
 
 
@@ -147,7 +149,24 @@ COPY src/ src/
 FROM {{ cookiecutter.project_module_name }}-web-stage AS {{ cookiecutter.project_module_name }}-web-boxed
 
 # Install a web server and database, and clean up after apt
-RUN apt-get install -y \
-        nginx \
+RUN apt-get install wget sudo && \
+    wget -O - https://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add - && \
+    echo "deb http://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest focal main" >> /etc/apt/sources.list.d/saltstack.list && \
+    apt-get update && \
+    apt-get install -y \
+        screen \
+        sudo wget \
+        salt-master salt-minion \
         && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir /srv/formulas && \
+    git clone https://github.com/saltstack-formulas/nginx-formula /srv/formulas/nginx-formula && \
+    git clone https://github.com/saltstack-formulas/users-formula.git /srv/formulas/users-formula && \
+    git clone https://github.com/hipikat/homeboy-formula /srv/formulas/homeboy-formula
+
+COPY etc/salt/minion.conf /etc/salt/minion
+COPY etc/salt/top.sls /srv/salt/top.sls
+COPY etc/salt/pillar /srv/pillar
+#RUN git clone --single-branch --branch hpkio https://github.com/hipikat/salt_pillars.git /srv/pillar
+
+WORKDIR /root

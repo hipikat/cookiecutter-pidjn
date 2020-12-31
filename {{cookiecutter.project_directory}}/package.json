@@ -75,6 +75,7 @@
     "docker:build:builder": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-web-build -t {{ cookiecutter.project_module_name }}-web:build .",
     "docker:build:debug": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-web-debug -t {{ cookiecutter.project_module_name }}-web:debug .",
     "docker:build:stage": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-web-stage -t {{ cookiecutter.project_module_name }}-web:stage .",
+    "docker:build:boxed": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-web-boxed -t {{ cookiecutter.project_module_name }}-web:boxed .",
     "docker:build": "run-s docker:build:builder docker:build:debug docker:build:stage",
     "docker:compose": "docker-compose -f etc/docker-compose.yml up",
     "clean:static": "rm -Rf static/*",

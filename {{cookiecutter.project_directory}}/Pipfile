@@ -30,7 +30,7 @@ click = "*"
 cookiecutter = "*"
 
 [packages]
-pdjn = {editable = true, path = "./src/cli/"}
+pdjn = {editable = true, path = "./cli/"}
 psycopg2-binary = "*"
 django-decouple = "*"
 # Base Django CMS requirements
