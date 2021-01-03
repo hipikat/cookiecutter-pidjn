@@ -11,7 +11,7 @@
 # J *   Pillar PCRE
 # S     Subnet/IP address
 # R     Range cluster
-# 
+#
 # '*' Indicates an alternative delimiter to ':' may
 # be specified between the letter and '@' character.
 
@@ -21,7 +21,8 @@ base:
     #- system.packages
     - users
     - homeboy
-   #- nginx
+    - nginx
+    - postgres
     #- letsencrypt
     #- postgres
     #

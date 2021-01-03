@@ -16,9 +16,9 @@
 # {{ cookiecutter.project_module_name }}-web-build. Node is NOT installed by design, so `npm` calls won't work
 # in staging containers.
 #
-# TODO: {{ cookiecutter.project_module_name }}-web-boxed extends {{ cookiecutter.project_module_name }}-web-base, creating a single 'fully deployed'
-# image which replicates a completed deployment to a single machine,
-# including the database and web server.
+# {{ cookiecutter.project_module_name }}-web-boxed extends {{ cookiecutter.project_module_name }}-web-base, creating a single 'fully deployed'
+# image which mirrors a deployment to a single machine, including the 
+# database and web server (but excluding a firewall, or https certs).
 ####
 
 #######################################
@@ -56,13 +56,16 @@ RUN apt-get update && \
 # Set up the Python virtualenv
 WORKDIR /app/
 COPY Pipfile ./
+
+# NB: While the `pdjn` cli is in early developed, it's
+# installed as local and editable (i.e. from cli/setup.py)
 COPY cli/ cli/
 RUN pipenv install --skip-lock
 
 # Expose port 8080 for Nginx
 EXPOSE 80
 
-# Run a shell by default
+# Just run a shell by default
 CMD ["/bin/bash"]
 
 
@@ -77,9 +80,10 @@ LABEL Description="Web app for {{ cookiecutter.project_codename }}"
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get install -y \
         nodejs \
-        libpython3.8-dev python3.8-dev \
-        git screen zsh sudo \
-        && rm -rf /var/lib/apt/lists/*
+        libpython3.8-dev \
+        python3.8-dev \
+        python3-virtualenvwrapper \
+        git screen zsh sudo
 
 # Install Python dev packages
 COPY Pipfile.lock ./
@@ -146,27 +150,35 @@ COPY --from={{ cookiecutter.project_module_name }}-web-build /app/static ./stati
 
 #######################################
 # BOXED (production-like image for a single-machine deploy)
-FROM {{ cookiecutter.project_module_name }}-web-stage AS {{ cookiecutter.project_module_name }}-web-boxed
+#       (but with Node, for convenience and development)
+FROM {{ cookiecutter.project_module_name }}-web-build AS {{ cookiecutter.project_module_name }}-web-boxed
 
-# Install a web server and database, and clean up after apt
-RUN apt-get install wget sudo && \
-    wget -O - https://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add - && \
+# Install Salt (and don't bother cleaning up after apt)
+RUN apt-get install -y \
+        git screen sudo supervisor wget
+
+RUN wget -O - https://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add - && \
     echo "deb http://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest focal main" >> /etc/apt/sources.list.d/saltstack.list && \
     apt-get update && \
-    apt-get install -y \
-        screen \
-        sudo wget \
-        salt-master salt-minion \
-        && rm -rf /var/lib/apt/lists/*
+    apt-get install -y  salt-minion
 
+# Install everything with Salt
 RUN mkdir /srv/formulas && \
     git clone https://github.com/saltstack-formulas/nginx-formula /srv/formulas/nginx-formula && \
+    git clone https://github.com/saltstack-formulas/postgres-formula.git /srv/formulas/postgres-formula && \
     git clone https://github.com/saltstack-formulas/users-formula.git /srv/formulas/users-formula && \
     git clone https://github.com/hipikat/homeboy-formula /srv/formulas/homeboy-formula
 
 COPY etc/salt/minion.conf /etc/salt/minion
 COPY etc/salt/top.sls /srv/salt/top.sls
 COPY etc/salt/pillar /srv/pillar
-#RUN git clone --single-branch --branch hpkio https://github.com/hipikat/salt_pillars.git /srv/pillar
 
-WORKDIR /root
+RUN salt-call state.apply --local
+
+# Add trimmings
+COPY etc/ etc/
+COPY package.json LICENSE.md ./
+
+# Run everything with Supervisor
+COPY etc/salt/supervisord-boxed.conf /etc/supervisor/conf.d/supervisord.conf
+CMD ["/usr/bin/supervisord"]

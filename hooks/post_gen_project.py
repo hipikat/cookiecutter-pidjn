@@ -11,7 +11,7 @@ import sys
 PROJECT_DIR = getcwd()
 
 
-print('Starting post_gen_project.py; cwd=' + PROJECT_DIR)
+logging.debug('Starting post_gen_project.py; cwd=' + PROJECT_DIR)
 
 logging.debug("Installing symlinks...")
 os.system('bin/install_symlinks.py --env debug')
@@ -19,4 +19,4 @@ os.system('bin/install_symlinks.py --env debug')
 logging.debug("Ensuring existence of a SECRET_KEY...")
 os.system('bin/generate_secret_key.py')
 
-print("Finished baking " + os.path.basename(PROJECT_DIR))
+logging.debug("Finished baking " + os.path.basename(PROJECT_DIR))

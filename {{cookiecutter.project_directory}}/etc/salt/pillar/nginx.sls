@@ -15,7 +15,9 @@ nginx:
   ppa_version: 'stable'
 
   service:
-    enable: true
+    # Use Supervisor instead of systemctl (or whatever),
+    # for Dockerisation and cross-platform convenience
+    enable: false
 
   config:
     worker_processes: 4

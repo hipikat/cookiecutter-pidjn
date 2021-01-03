@@ -4,7 +4,7 @@
 
 users:
   hipikat:
-  
+
     # Used by the (SaltStack-blessed) Users formula
     fullname: Ada Wright
     email: ada@hpk.io
@@ -37,7 +37,7 @@ users:
   XhJ1oZNSc0xGctmsWOfQLJgpAFm8eUD1b9sr7vklCXoE15k6KW3xWM70gCkgnKC04/r2zkjhS5WblLcJTV4VsUkmmjVd{# -#}
   H93dKxr3YjkLs1M8taL7jTVDjA71oKw2fONOL01Ck8Uam19iRyFQL8xFLN0Gdp5NK1OZew1p6nTjre4tCTjQ{# -#}
   == new-mac-2020-01-02
-  
+
     # Used by the Homeboy formula
     dotfiles:
       url: https://github.com/hipikat/dotfiles.git

@@ -10,7 +10,7 @@ import sys
 MODULE_REGEX = r'^[_a-zA-Z][_a-zA-Z0-9]+$'
 PROJECT_DIR = realpath(getcwd())
 
-print('Starting pre_gen_project.py; cwd=' + PROJECT_DIR)
+logging.debug('Starting pre_gen_project.py; cwd=' + PROJECT_DIR)
 
 
 module_name = re.escape('{{ cookiecutter.project_module_name }}')
@@ -23,8 +23,8 @@ if not re.match(MODULE_REGEX, module_name):
                      '"{{ cookiecutter.project_module_name }}" is not a valid '
                      'Python module name.')
 
-    print('ERROR: %s is not a valid Python module name!' % module_name)
+    logging.debug('ERROR: %s is not a valid Python module name!' % module_name)
     sys.exit(1)
 
 
-print('Finished pre_gen_project.py')
+logging.debug('Finished pre_gen_project.py')

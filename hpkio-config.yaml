@@ -1,6 +1,6 @@
 # Cookiecutter configuration used to bake Ada's webiste
 default_context:
-  project_directory: "../hpk-master"
+  project_directory: "../hpk"
   author_name: "Ada Wright"
   author_email: "ada@hpk.io"
   project_short_name: "Ada's little website"
@@ -14,6 +14,8 @@ default_context:
   project_github_url: "https://github.com/hipikat/hpk.io"
   docker_build_target: "ubuntu:focal"
   open_source_license: "BSD 2-clause"
+  admin_username: "root"
+  admin_password: "password"
 
 abbreviations:
   pidjn: /Users/hipikat/dev/cookiecutter-pidjn
