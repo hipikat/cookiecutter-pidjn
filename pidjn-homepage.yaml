@@ -11,7 +11,7 @@ default_context:
   local_dev_hostname: "pidjn.local"
   production_hostname: "pidjn.hpk.io"
   low_develop_port: "8061"
-  project_github_url: "https://github.com/hipikat/cookiecutter-pidjn"
+  project_url: "https://github.com/hipikat/cookiecutter-pidjn"
   docker_build_target: "ubuntu:focal"
   open_source_license: "BSD 2-clause"
 

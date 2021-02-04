@@ -11,7 +11,7 @@ default_context:
   local_dev_hostname: "localhost"
   production_hostname: "alice.hpk.io"
   low_develop_port: "8071"
-  project_github_url: "https://github.com/alice-bobak/mysite"
+  project_url: "https://github.com/alice-bobak/mysite"
   docker_build_target: "ubuntu:focal"
   open_source_license: "MIT"
 

@@ -6,13 +6,15 @@ verify_ssl = true
 [requires]
 python_full_version = "3.8.5"
 
-[scripts]
+scripts]
+setadmin = "printf \"from django.contrib.admin import get_user_model as gum\nUser = gum()\ntry:\n    User.objects.create_superuser('admin', '{{cookiecutter.author_email}}', '${PASSWORD}')\nexcept IntegrityError:\n    User.objects.get(username='admin').set_password('${PASSWORD}')\" | python src/manage.py shell"
 manage = "python src/manage.py"
 python = "python"
 server = "python src/manage.py runserver {{ cookiecutter.local_dev_hostname }}:{{ cookiecutter.low_develop_port }}"
 server_plus = "python src/manage.py runserver_plus {{ cookiecutter.local_dev_hostname }}:{{ cookiecutter.low_develop_port|int + 1 }}"
 server_debug_view = "python src/manage.py runserver_plus --pdb {{ cookiecutter.local_dev_hostname }}:{{ cookiecutter.low_develop_port|int + 2 }}"
 server_debug_except = "python src/manage.py runserver_plus --pm {{ cookiecutter.local_dev_hostname }}:{{ cookiecutter.low_develop_port|int + 3 }}"
+shell = "python src/manage.py shell"
 dumpdata = "python src/manage.py dumpdata --format yaml --indent 2 --natural-primary --natural-foreign --exclude sessions --exclude auth.user --output ./fixtures/latest.yaml"
 collectstatic = "python src/manage.py collectstatic --no-input"
 

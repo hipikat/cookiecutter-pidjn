@@ -37,11 +37,17 @@ def install_project_symlinks(env, force=False, config=False):
     - Install superfluous links to config files under etc/ if `config` is `True`"""
 
     SYMLINKS = {
+         {% if cookiecutter.frontend_framework == "zurb_foundation" -%}
         'src/sass/lib': {
             'foundation': '../../../node_modules/foundation-sites/scss',
             '_vendor': '../../../node_modules/foundation-sites/_vendor',
             'motion-ui': '../../../node_modules/motion-ui/src',
         },
+        {% elif cookiecutter.frontend_framework == "twitter_bootstrap" %}
+        'src/sass/lib': {
+            'bootstrap': '../../../node_modules/bootstrap/scss',
+        }
+        {%- endif %}
         'src/sass/lib/fontawesome': {
             'scss': '../../../../node_modules/@fortawesome/fontawesome-free/scss',
             'webfonts': '../../../../node_modules/@fortawesome/fontawesome-free/webfonts',

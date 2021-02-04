@@ -21,18 +21,20 @@
 # database and web server (but excluding a firewall, or https certs).
 ####
 
-
 #######################################
-# Base image for all containers in {{ cookiecutter.project_codename }}
-FROM ubuntu:focal AS {{ cookiecutter.project_module_name }}-base
+# Base image for the web container for {{ cookiecutter.project_codename }}
+FROM ubuntu:focal AS {{ cookiecutter.project_module_name }}-web-base
 
 LABEL version="0.1.0"
-LABEL Description="Base image for all {{ cookiecutter.project_codename }} containers"
+LABEL Description="Base image for {{ cookiecutter.project_codename }} containers"
 LABEL maintainer="{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"
 
 ENV LANG en_AU.UTF-8
 ENV SHELL /bin/bash
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PIPENV_VENV_IN_PROJECT=1
+ENV PYTHONUNBUFFERED=TRUE
+ENV DJANGO_SETTINGS_MODULE={{ cookiecutter.project_module_name }}.settings.prod
 
 # Update apt, add PPAs, and install python 3.8
 # Also, install system-Python packages
@@ -44,30 +46,12 @@ RUN apt-get update && \
         curl jq vim zip unzip tree less \
         libpython3.8 \
         pipenv \
-        python3.8 \
+        python3.8 python3.8-dev \
         python3-pip \
         python3-virtualenv && \
     pip3 install \
         flake8 \
         pep8
-
-# Just run a shell by default
-CMD ["/bin/bash"]
-
-
-
-#######################################
-# Base image for web containers in {{ cookiecutter.project_codename }}
-FROM {{ cookiecutter.project_module_name }}-base AS {{ cookiecutter.project_module_name }}-web-base
-
-LABEL Description="Base image for {{ cookiecutter.project_codename }} web-enabled containers"
-
-ENV PIPENV_VENV_IN_PROJECT=1
-ENV PYTHONUNBUFFERED=TRUE
-ENV DJANGO_SETTINGS_MODULE={{ cookiecutter.project_module_name }}.settings.prod
-
-# python3.8-dev is required for uWSGI (and Gunicorn too)
-RUN apt-get install -y python3.8-dev
 
 # Set up the Python virtualenv
 WORKDIR /app/
@@ -80,6 +64,9 @@ RUN pipenv install --skip-lock
 
 # Expose port 8080 for Nginx
 EXPOSE 80
+
+# Just run a shell by default
+CMD ["/bin/bash"]
 
 
 
@@ -160,6 +147,7 @@ COPY --from={{ cookiecutter.project_module_name }}-web-build /app/static ./stati
 #COPY src/ src/
 
 
+
 #######################################
 # BOXED (production-like image for a single-machine deploy)
 #       (but with Node, for convenience and development)
@@ -167,8 +155,9 @@ FROM {{ cookiecutter.project_module_name }}-web-build AS {{ cookiecutter.project
 
 # Install Salt (and don't bother cleaning up after apt)
 RUN apt-get install -y \
-        git screen sudo supervisor wget \
-    wget -O - https://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add - && \
+        git screen sudo supervisor wget
+
+RUN wget -O - https://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add - && \
     echo "deb http://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest focal main" >> /etc/apt/sources.list.d/saltstack.list && \
     apt-get update && \
     apt-get install -y  salt-minion
@@ -193,30 +182,3 @@ COPY package.json LICENSE.md ./
 # Run everything with Supervisor
 COPY etc/salt/supervisord-boxed.conf /etc/supervisor/conf.d/supervisord.conf
 CMD ["/usr/bin/supervisord"]
-
-
-
-#######################################
-# SALTY (salt master / cloud controller)
-# (TODO: dns wrangler?, secrets manager?, gitlab host?, ci runner?)
-FROM {{ cookiecutter.project_module_name }}-base AS {{ cookiecutter.project_module_name }}-salty
-
-RUN apt-get install -y \
-        git screen sudo supervisor wget && \
-    wget -O - https://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add - && \
-    echo "deb http://repo.saltstack.com/py3/ubuntu/20.04/amd64/latest focal main" >> /etc/apt/sources.list.d/saltstack.list && \
-    apt-get update
-
-RUN apt-get install -y \
-        salt-master \
-        salt-minion \
-        salt-cloud
-        #salt-syndic        # next
-        #salt-api           # surely
-        #salt-ssh           # maybe not
-
-COPY etc/salt/cloud.profiles /etc/salt/cloud.profiles
-COPY var/pidjn/cloud_key.pub /etc/salt/pki/cloud/pidjn.pub
-COPY var/pidjn/cloud_key /etc/salt/pki/cloud/pidjn
-
-ssh_key_file: /path/to/ssh/key/file

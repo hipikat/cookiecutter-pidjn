@@ -11,7 +11,7 @@ default_context:
   local_dev_hostname: "{{ cookiecutter.local_dev_hostname }}"
   production_hostname: "{{ cookiecutter.production_hostname }}"
   low_develop_port: "{{ cookiecutter.low_develop_port }}"
-  project_github_url: "{{ cookiecutter.project_github_url }}"
+  project_url: "{{ cookiecutter.project_url }}"
   docker_build_target: "{{ cookiecutter.docker_build_target }}"
   open_source_license: "{{ cookiecutter.open_source_license }}"
 

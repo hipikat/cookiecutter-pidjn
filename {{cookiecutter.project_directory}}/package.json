@@ -8,13 +8,10 @@
     "url": "https://{{ cookiecutter.production_hostname }}/"
   },
   "license": "{{ cookiecutter.open_source_license }}",
-  "homepage": "{{ cookiecutter.project_github_url }}#readme",
+  "homepage": "{{ cookiecutter.project_url }}#readme",
   "repository": {
     "type": "git",
-    "url": "{{ cookiecutter.project_github_url }}"
-  },
-  "bugs": {
-    "url": "{{ cookiecutter.project_github_url }}/issues"
+    "url": "{{ cookiecutter.project_url }}"
   },
   "private": true,
   "dependencies": {
@@ -63,6 +60,7 @@
     "init": "npm run init:py:dev ; npm run init:node:dev ; npm run install:symlinks ; npm run install:secretkey",
     "install:symlinks": "python bin/install_symlinks.py --debug --config",
     "install:secretkey": "python bin/generate_secret_key.py",
+    "install:cloud_key": "yes | ssh-keygen -b 4096 -t rsa -f var/pidjn/cloud_key -q -C 'pidjn@{{ cookiecutter.project_module_name }}' -N \"\" && echo 'yes'",
     "reinit": "npm run teardown ; npm run init:node:dev & PIDNPM=$! ; npm run init:py:dev & PIDPY=$! ; wait $PIDNPM ; npm run install:symlinks ; wait $PIDPY npm run install:secretkey",
     "reroll": "rm package-lock.json Pipfile.lock ; npm run reinit ; git add package-lock.json Pipfile.lock",
     "npm:outdated": "npm outdated",
@@ -77,6 +75,7 @@
     "docker:build:debug": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-web-debug -t {{ cookiecutter.project_module_name }}-web:debug .",
     "docker:build:stage": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-web-stage -t {{ cookiecutter.project_module_name }}-web:stage .",
     "docker:build:boxed": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-web-boxed -t {{ cookiecutter.project_module_name }}-web:boxed .",
+    "docker:build:salty": "docker build -f etc/Dockerfile --target {{ cookiecutter.project_module_name }}-salty -t {{ cookiecutter.project_module_name }}-salty .",
     "docker:build": "run-s docker:build:builder docker:build:debug docker:build:stage docker:build:boxed",
     "docker:compose": "docker-compose -f etc/docker-compose.yml up",
     "docker:shell": "docker run -it -v $(pwd)/etc:/app/etc -v $(pwd)/src:/app/src {{ cookiecutter.project_module_name}}-web:boxed /bin/zsh",

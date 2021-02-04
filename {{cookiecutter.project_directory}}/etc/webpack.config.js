@@ -220,9 +220,13 @@ module.exports = env => {
                 sourceMap: true,
                 sassOptions: {
                   includePaths: [
+                    {% if cookiecutter.frontend_framework == "zurb_foundation" -%}
                     path.resolve(PROJECT_PATH, 'src/sass/lib/foundation'),
                     path.resolve(PROJECT_PATH, 'src/sass/lib/motion-ui'),
                     path.resolve(PROJECT_PATH, 'src/sass/lib/_vendor'),
+                    {% elif cookiecutter.frontend_framework == "twitter_bootstrap" %}
+                    path.resolve(PROJECT_PATH, 'src/sass/lib/bootstrap'),
+                    {%- endif %}
                     path.resolve(PROJECT_PATH, "src/sass"),
                   ]
                 }

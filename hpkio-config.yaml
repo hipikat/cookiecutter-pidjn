@@ -11,10 +11,11 @@ default_context:
   local_dev_hostname: "hpkio.local"
   production_hostname: "hpk.io"
   low_develop_port: "8071"
-  project_github_url: "https://github.com/hipikat/hpk.io"
+  project_url: "https://github.com/hipikat/hpk.io"
   docker_build_target: "ubuntu:focal"
   open_source_license: "BSD 2-clause"
   admin_username: "root"
+  admin_email: "web@hpk.io"
   admin_password: "password"
 
 abbreviations:

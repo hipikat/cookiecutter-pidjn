@@ -11,8 +11,20 @@
   "local_dev_hostname": "localhost",
   "production_hostname": "mysite.com",
   "low_develop_port": 8071,
-  "docker_build_target": ["alpine:3.12.2", "ubuntu:focal", "opensuse/leap:15.2.1"],
-  "project_github_url": "https://github.com/myaccount/mysite",
+  "docker_build_target": [
+    "alpine:3.12.2",
+    "ubuntu:focal",
+    "opensuse/leap:15.2.1"
+  ],
+  "frontend_framework": [
+    "zurb_foundation",
+    "twitter_bootstrap"
+  ],
+  "cloud_provider": [
+    "digital_ocean",
+    "linode"
+  ],
+  "project_url": "https://github.com/myaccount/mysite",
   "open_source_license": [
     "AGPLv3",
     "Apache",
